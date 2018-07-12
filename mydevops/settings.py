@@ -134,3 +134,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGGING = {
+    'version': 1,
+    'disable_exsiting_loggers': False,
+    'formatters': {
+        'test': {
+            'format': '[%(levelname)s %(asctime)s %(module)s:%(lineno)d] %(message)s',
+            'datefmt': '%Y%m%d %H:%M:%S',
+        },
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s',
+            'datefmt': '%Y%m%d %H:%M:%S',
+        },
+        'console_fmt': {
+            'format': '%(levelname)s %(asctime)s : %(message)s',
+            'datefmt': '%Y%m%d %H:%M:%S',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'test'
+        },
+        'file': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'console_fmt',
+            'filename': './logs/errors.log'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}

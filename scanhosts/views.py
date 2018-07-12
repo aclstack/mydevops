@@ -1,7 +1,9 @@
 from django.http import JsonResponse, HttpResponse
 from .models import  *
 import json
+import logging
 # Create your views here.
+logger = logging.getLogger('django')
 
 
 def user_info(request):
@@ -13,9 +15,10 @@ def user_info(request):
         res = UserIPInfo.objects.create(ip=ip_addr)
         ip_add_id = res.id
     else:
+        logger.info("%s already exists" % (ip_addr))
         ip_add_id = user_obj[0].id
 
-    BrowseInfo.objects.create(useragent= user_ua, userip_id=ip_add_id)
+    BrowseInfo.objects.create(useragent=user_ua, userip_id=ip_add_id)
 
     result = {
         "STATUS": "success",
